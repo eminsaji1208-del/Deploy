@@ -40,7 +40,7 @@ export default function HomePage() {
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 pt-12 border-t border-border">
           {siteConfig.home.stats.map((stat, i) => (
-            <FadeIn key={i} delay={0.5 + (i * 0.1)} direction="up">
+            <FadeIn key={i} delay={0.5 + (i * 0.1)}>
               <div>
                 <p className="text-3xl md:text-4xl font-semibold text-primary mb-2 tracking-tight">{stat.metric}</p>
                 <p className="text-[11px] font-medium text-text-muted uppercase tracking-widest leading-relaxed">
