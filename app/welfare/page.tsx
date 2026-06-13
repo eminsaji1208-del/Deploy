@@ -1,49 +1,56 @@
 import { siteConfig } from "@/data/site-config";
-import PageHeader from "@/components/PageHeader";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
+import AnimatedCard from "@/components/AnimatedCard"; // Import the new card!
 
-export default function WelfarePage() {
+export default function HomePage() {
   return (
-    <div className="bg-background min-h-screen">
-      <PageHeader title="Student Welfare Framework" subtitle={siteConfig.welfare.summary} />
-      <div className="max-w-6xl mx-auto px-6 py-24 space-y-24">
+    <div className="relative min-h-screen flex flex-col justify-center bg-background pt-20">
+      <div className="max-w-5xl mx-auto px-6 py-24 w-full">
         
-        <div>
-          <FadeIn delay={0.1}>
-            <h2 className="text-xl font-semibold text-primary mb-8 tracking-tight border-b border-border pb-4">Scholarships & Grants</h2>
-          </FadeIn>
-          <div className="grid md:grid-cols-2 gap-6">
-            {siteConfig.welfare.scholarships.map((s, i) => (
-              <FadeIn key={i} delay={0.2 + (i * 0.1)}>
-                <div className="border border-border rounded-2xl p-8 bg-surface">
-                  <span className="text-[10px] font-medium text-text-muted uppercase tracking-widest border border-border px-2 py-1 rounded-md">{s.coverage}</span>
-                  <h3 className="text-lg font-semibold text-primary mt-4 mb-2">{s.title}</h3>
-                  <p className="text-sm text-text-muted font-light leading-relaxed">Eligibility: {s.eligibility}</p>
-                </div>
-              </FadeIn>
-            ))}
+        <FadeIn delay={0.1}>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-surface border border-border rounded-full text-text-muted text-[10px] font-bold tracking-widest uppercase mb-8 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"></span>
+            Official Portal
           </div>
-        </div>
+        </FadeIn>
 
-        <div>
-          <FadeIn delay={0.1}>
-            <h2 className="text-xl font-semibold text-primary mb-8 tracking-tight border-b border-border pb-4">Healthcare Advisory</h2>
-          </FadeIn>
-          <div className="grid md:grid-cols-2 gap-6">
-            {siteConfig.welfare.services.map((s, i) => (
-              <FadeIn key={i} delay={0.2 + (i * 0.1)}>
-                <div className="p-8 rounded-2xl border border-border bg-surface flex flex-col justify-between h-full">
-                  <div>
-                    <h3 className="font-semibold text-primary mb-1">{s.name}</h3>
-                    <p className="text-sm text-text-muted font-light">{s.type}</p>
-                  </div>
-                  <div className="mt-6 pt-4 border-t border-border/50">
-                    <span className="text-[11px] text-text-muted uppercase tracking-wide">Location: {s.location}</span>
-                  </div>
-                </div>
-              </FadeIn>
-            ))}
+        <FadeIn delay={0.2}>
+          <h1 className="text-5xl md:text-7xl font-semibold text-primary tracking-tight mb-8 leading-[1.05]">
+            {siteConfig.home.heroTitle}
+          </h1>
+        </FadeIn>
+
+        <FadeIn delay={0.3}>
+          <p className="text-lg md:text-xl text-text-muted max-w-2xl mb-12 leading-relaxed font-light">
+            {siteConfig.home.heroSubtitle}
+          </p>
+        </FadeIn>
+
+        <FadeIn delay={0.4}>
+          <div className="flex flex-wrap items-center gap-4 mb-24">
+            <Link href="/welfare" className="px-7 py-3.5 bg-accent text-white font-medium rounded-full hover:bg-accent/90 transition-colors text-sm shadow-[0_4px_14px_0_rgba(0,102,255,0.2)]">
+              Access Resources
+            </Link>
+            <Link href="/about" className="px-7 py-3.5 bg-transparent border border-border text-text-main font-medium rounded-full hover:bg-surface transition-colors text-sm flex items-center gap-2 group">
+              Our Strategy <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform text-accent" />
+            </Link>
           </div>
+        </FadeIn>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 pt-12 border-t border-border">
+          {siteConfig.home.stats.map((stat, i) => (
+            <FadeIn key={i} delay={0.5 + (i * 0.1)}>
+              {/* Wrapping the stats in our new AnimatedCard! */}
+              <AnimatedCard className="p-6 text-center h-full flex flex-col justify-center">
+                <p className="text-3xl font-semibold text-primary mb-2 tracking-tight">{stat.metric}</p>
+                <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest leading-relaxed">
+                  {stat.label}
+                </p>
+              </AnimatedCard>
+            </FadeIn>
+          ))}
         </div>
 
       </div>
