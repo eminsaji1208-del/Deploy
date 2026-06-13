@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: hsl(210 40% 98%);
-  --color-surface: hsl(0 0% 100%);
-  --color-primary: hsl(222 47% 11%);
-  --color-secondary: hsl(215 25% 27%);
-  --color-accent: hsl(221 83% 53%);
-  --color-text-main: hsl(222 47% 11%);
-  --color-text-muted: hsl(215 16% 47%);
-  --color-border: hsl(214 32% 91%);
+  /* Pristine, minimalist light mode */
+  --color-background: #fafafa;
+  --color-surface: #ffffff;
+  --color-primary: #171717; /* Soft black for main headings */
+  --color-secondary: #262626;
+  --color-accent: #0a0a0a; /* True black for buttons/badges */
+  --color-text-main: #262626;
+  --color-text-muted: #737373; /* Elegant gray for reading text */
+  --color-border: #e5e5e5; /* Very subtle borders */
   
   --font-sans: var(--font-inter), sans-serif;
 }
@@ -21,13 +22,15 @@ body {
   background-color: var(--color-background);
   color: var(--color-text-main);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
-  background-color: var(--color-accent);
+  background-color: var(--color-primary);
   color: white;
 }
 
+/* Signature premium blur effect for navbars and cards */
 @utility glass-card {
-  @apply bg-surface/80 backdrop-blur-md border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.04)];
+  @apply bg-surface/70 backdrop-blur-lg border border-border shadow-[0_2px_10px_rgba(0,0,0,0.02)];
 }

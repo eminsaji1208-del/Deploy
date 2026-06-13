@@ -1,38 +1,51 @@
 import { siteConfig } from "@/data/site-config";
 import PageHeader from "@/components/PageHeader";
+import FadeIn from "@/components/FadeIn";
 
 export default function WelfarePage() {
   return (
-    <div>
+    <div className="bg-background min-h-screen">
       <PageHeader title="Student Welfare Framework" subtitle={siteConfig.welfare.summary} />
-      <div className="max-w-7xl mx-auto px-6 py-20 space-y-16">
+      <div className="max-w-6xl mx-auto px-6 py-24 space-y-24">
+        
         <div>
-          <h2 className="text-2xl font-black text-primary mb-8">Available Scholarships & Development Grants</h2>
+          <FadeIn delay={0.1}>
+            <h2 className="text-xl font-semibold text-primary mb-8 tracking-tight border-b border-border pb-4">Scholarships & Grants</h2>
+          </FadeIn>
           <div className="grid md:grid-cols-2 gap-6">
             {siteConfig.welfare.scholarships.map((s, i) => (
-              <div key={i} className="border border-border rounded-xl p-6 bg-surface">
-                <span className="text-xs font-bold text-accent uppercase tracking-widest">{s.coverage}</span>
-                <h3 className="text-lg font-bold text-primary mt-2 mb-3">{s.title}</h3>
-                <p className="text-xs text-text-muted leading-relaxed"><strong>Pre-requisites:</strong> {s.eligibility}</p>
-              </div>
+              <FadeIn key={i} delay={0.2 + (i * 0.1)}>
+                <div className="border border-border rounded-2xl p-8 bg-surface">
+                  <span className="text-[10px] font-medium text-text-muted uppercase tracking-widest border border-border px-2 py-1 rounded-md">{s.coverage}</span>
+                  <h3 className="text-lg font-semibold text-primary mt-4 mb-2">{s.title}</h3>
+                  <p className="text-sm text-text-muted font-light leading-relaxed">Eligibility: {s.eligibility}</p>
+                </div>
+              </FadeIn>
             ))}
           </div>
         </div>
 
         <div>
-          <h2 className="text-2xl font-black text-primary mb-8">Healthcare & Essential Advisory Programs</h2>
+          <FadeIn delay={0.1}>
+            <h2 className="text-xl font-semibold text-primary mb-8 tracking-tight border-b border-border pb-4">Healthcare Advisory</h2>
+          </FadeIn>
           <div className="grid md:grid-cols-2 gap-6">
             {siteConfig.welfare.services.map((s, i) => (
-              <div key={i} className="glass-card p-6 rounded-xl border flex justify-between items-center">
-                <div>
-                  <h3 className="font-bold text-primary">{s.name}</h3>
-                  <p className="text-xs text-text-muted mt-1">{s.type}</p>
+              <FadeIn key={i} delay={0.2 + (i * 0.1)}>
+                <div className="p-8 rounded-2xl border border-border bg-surface flex flex-col justify-between h-full">
+                  <div>
+                    <h3 className="font-semibold text-primary mb-1">{s.name}</h3>
+                    <p className="text-sm text-text-muted font-light">{s.type}</p>
+                  </div>
+                  <div className="mt-6 pt-4 border-t border-border/50">
+                    <span className="text-[11px] text-text-muted uppercase tracking-wide">Location: {s.location}</span>
+                  </div>
                 </div>
-                <span className="text-xs font-medium bg-background px-3 py-1 border rounded-md">{s.location}</span>
-              </div>
+              </FadeIn>
             ))}
           </div>
         </div>
+
       </div>
     </div>
   );

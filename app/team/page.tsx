@@ -1,24 +1,26 @@
 import { siteConfig } from "@/data/site-config";
 import PageHeader from "@/components/PageHeader";
-import { Mail } from "lucide-react";
+import FadeIn from "@/components/FadeIn";
 
 export default function TeamPage() {
   return (
-    <div>
-      <PageHeader title="Meet the Leadership" subtitle="Administrative and pastoral team dedicated to student management protocols." />
-      <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-3 gap-8">
+    <div className="bg-background min-h-screen">
+      <PageHeader title="Meet the Leadership" subtitle="Administrative and pastoral team dedicated to student management." />
+      <div className="max-w-6xl mx-auto px-6 py-24 grid sm:grid-cols-2 md:grid-cols-3 gap-8">
         {siteConfig.team.map((member, i) => (
-          <div key={i} className="border border-border rounded-2xl p-6 bg-surface text-center">
-            <div className="w-20 h-20 bg-accent/10 text-accent rounded-full flex items-center justify-center font-bold text-xl mx-auto mb-4">
-              {member.name.split(' ').map(n => n[0]).join('')}
+          <FadeIn key={i} delay={0.1 + (i * 0.1)}>
+            <div className="border border-border rounded-2xl p-8 bg-surface text-center hover:border-text-muted transition-colors duration-500">
+              <div className="w-16 h-16 bg-background border border-border text-primary rounded-full flex items-center justify-center font-semibold text-lg mx-auto mb-6">
+                {member.name.split(' ').map(n => n[0]).join('')}
+              </div>
+              <h3 className="text-base font-semibold text-primary tracking-tight">{member.name}</h3>
+              <p className="text-[11px] text-text-muted uppercase tracking-widest mt-1 mb-6">{member.role}</p>
+              <div className="pt-6 border-t border-border/50 text-left space-y-2 text-[13px] text-text-muted font-light">
+                <p>Office: {member.office}</p>
+                <p>Email: {member.contact}</p>
+              </div>
             </div>
-            <h3 className="text-lg font-bold text-primary">{member.name}</h3>
-            <p className="text-xs font-medium text-accent uppercase tracking-wider mt-1 mb-4">{member.role}</p>
-            <div className="pt-4 border-t border-border text-left space-y-2 text-xs text-text-muted">
-              <p><strong>Office Locator:</strong> {member.office}</p>
-              <p className="flex items-center gap-1.5"><Mail size={12} /> {member.contact}</p>
-            </div>
-          </div>
+          </FadeIn>
         ))}
       </div>
     </div>

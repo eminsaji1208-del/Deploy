@@ -1,38 +1,56 @@
 import { siteConfig } from "@/data/site-config";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import FadeIn from "@/components/FadeIn";
 
 export default function HomePage() {
   return (
-    <div className="relative min-h-screen flex flex-col justify-center bg-gradient-to-b from-background to-surface pt-20">
-      <div className="max-w-5xl mx-auto px-6 text-center py-20">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-accent/10 border border-accent/20 rounded-full text-accent text-xs font-bold uppercase tracking-wider mb-6">
-          Official Administrative Portal
-        </div>
-        <h1 className="text-4xl md:text-7xl font-black text-primary tracking-tight mb-8 leading-[1.1]">
-          {siteConfig.home.heroTitle}
-        </h1>
-        <p className="text-md md:text-xl text-text-muted max-w-3xl mx-auto mb-12 leading-relaxed">
-          {siteConfig.home.heroSubtitle}
-        </p>
+    <div className="relative min-h-screen flex flex-col justify-center bg-background pt-20">
+      <div className="max-w-5xl mx-auto px-6 py-20 w-full">
+        
+        <FadeIn delay={0.1}>
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-surface border border-border rounded-full text-text-muted text-[11px] font-medium tracking-widest uppercase mb-8 shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+            Official Portal
+          </div>
+        </FadeIn>
 
-        <div className="flex flex-wrap justify-center gap-4 mb-20">
-          <Link href="/welfare" className="px-8 py-4 bg-accent text-white font-medium rounded-xl shadow-lg shadow-accent/25 hover:bg-accent/90 transition text-sm">
-            Access Student Welfare
-          </Link>
-          <Link href="/about" className="px-8 py-4 bg-surface border border-border text-primary font-medium rounded-xl hover:bg-background transition text-sm flex items-center gap-2">
-            Learn Strategy Overview <ArrowRight size={16} />
-          </Link>
-        </div>
+        <FadeIn delay={0.2}>
+          <h1 className="text-5xl md:text-7xl font-semibold text-primary tracking-tight mb-8 leading-[1.05]">
+            {siteConfig.home.heroTitle}
+          </h1>
+        </FadeIn>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-12 border-t border-border/60">
+        <FadeIn delay={0.3}>
+          <p className="text-lg md:text-xl text-text-muted max-w-2xl mb-12 leading-relaxed font-light">
+            {siteConfig.home.heroSubtitle}
+          </p>
+        </FadeIn>
+
+        <FadeIn delay={0.4}>
+          <div className="flex flex-wrap items-center gap-4 mb-24">
+            <Link href="/welfare" className="px-6 py-3 bg-accent text-white font-medium rounded-full hover:scale-105 transition-transform duration-300 text-sm shadow-[0_4px_14px_0_rgba(0,0,0,0.1)]">
+              Access Resources
+            </Link>
+            <Link href="/about" className="px-6 py-3 bg-transparent border border-border text-text-main font-medium rounded-full hover:bg-surface hover:border-text-muted transition-all duration-300 text-sm flex items-center gap-2 group">
+              Our Strategy <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        </FadeIn>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 pt-12 border-t border-border">
           {siteConfig.home.stats.map((stat, i) => (
-            <div key={i} className="text-center">
-              <p className="text-2xl md:text-4xl font-black text-accent mb-1">{stat.metric}</p>
-              <p className="text-xs font-medium text-text-muted uppercase tracking-wider">{stat.label}</p>
-            </div>
+            <FadeIn key={i} delay={0.5 + (i * 0.1)} direction="up">
+              <div>
+                <p className="text-3xl md:text-4xl font-semibold text-primary mb-2 tracking-tight">{stat.metric}</p>
+                <p className="text-[11px] font-medium text-text-muted uppercase tracking-widest leading-relaxed">
+                  {stat.label}
+                </p>
+              </div>
+            </FadeIn>
           ))}
         </div>
+
       </div>
     </div>
   );

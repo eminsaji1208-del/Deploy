@@ -1,23 +1,26 @@
 import { siteConfig } from "@/data/site-config";
 import PageHeader from "@/components/PageHeader";
+import FadeIn from "@/components/FadeIn";
 
 export default function AboutPage() {
   return (
-    <div>
+    <div className="bg-background min-h-screen">
       <PageHeader title="About Student Affairs" subtitle={siteConfig.about.title} />
-      <div className="max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-3 gap-16">
-        <div className="lg:col-span-1">
-          <h2 className="text-2xl font-bold text-primary mb-4">Operational Architecture</h2>
-          <p className="text-text-muted leading-relaxed text-sm">{siteConfig.about.description}</p>
-        </div>
-        <div className="lg:col-span-2 space-y-8 relative before:absolute before:left-4 before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
+      <div className="max-w-6xl mx-auto px-6 py-24 grid lg:grid-cols-3 gap-16">
+        <FadeIn delay={0.1} className="lg:col-span-1">
+          <h2 className="text-xl font-semibold text-primary mb-4 tracking-tight">Operational Architecture</h2>
+          <p className="text-text-muted leading-relaxed font-light">{siteConfig.about.description}</p>
+        </FadeIn>
+        <div className="lg:col-span-2 space-y-12 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-border">
           {siteConfig.about.timeline.map((item, i) => (
-            <div key={i} className="relative pl-10">
-              <div className="absolute left-2 top-2 w-4 h-4 rounded-full bg-accent border-4 border-background -translate-x-1/2" />
-              <span className="font-mono font-bold text-accent text-sm">{item.year}</span>
-              <h3 className="text-lg font-bold text-primary mt-1 mb-2">{item.title}</h3>
-              <p className="text-sm text-text-muted leading-relaxed">{item.details}</p>
-            </div>
+            <FadeIn key={i} delay={0.2 + (i * 0.1)} className="relative pl-12">
+              <div className="absolute left-0 top-1.5 w-6 h-6 rounded-full bg-surface border border-border flex items-center justify-center">
+                <div className="w-1.5 h-1.5 bg-primary rounded-full" />
+              </div>
+              <span className="font-mono font-medium text-text-muted text-[11px] uppercase tracking-widest">{item.year}</span>
+              <h3 className="text-lg font-semibold text-primary mt-1 mb-2 tracking-tight">{item.title}</h3>
+              <p className="text-sm text-text-muted leading-relaxed font-light">{item.details}</p>
+            </FadeIn>
           ))}
         </div>
       </div>
