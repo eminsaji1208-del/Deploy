@@ -1,58 +1,63 @@
 "use client";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { siteConfig } from "@/data/site-config";
-import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
+import { siteConfig } from "@/data/site-config";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const links = [
-    { name: "About", href: "#about" },
-    { name: "Welfare", href: "#responsibilities" },
-    { name: "Initiatives", href: "#initiatives" },
-    { name: "Contact", href: "#contact" },
-  ];
-
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "glass-card py-4" : "bg-transparent py-6"}`}>
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? "glass-card py-3 border-b" : "bg-transparent py-5"}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <Link href="/" className="text-xl font-bold tracking-tight text-primary">
-          {siteConfig.header.logoText}
+        <Link href="/" className="flex flex-col">
+          <span className="text-md font-bold tracking-tight text-primary leading-none">{siteConfig.institution.abbr}</span>
+          <span className="text-xs text-text-muted mt-0.5">{siteConfig.institution.office}</span>
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden md:flex gap-8 items-center">
-          {links.map((link) => (
-            <Link key={link.name} href={link.href} className="text-sm font-medium text-text-muted hover:text-accent transition-colors">
-              {link.name}
-            </Link>
-          ))}
+        {/* Multi-Page Links Desktop */}
+        <div className="hidden lg:flex gap-6 items-center">
+          {siteConfig.navigation.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link 
+                key={link.href} 
+                href={link.href} 
+                className={`text-xs font-semibold uppercase tracking-wider transition-colors ${isActive ? "text-accent" : "text-text-muted hover:text-primary"}`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
 
-        {/* Mobile Toggle */}
-        <button className="md:hidden text-primary" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+        <button className="lg:hidden text-primary" onClick={() => setMobileOpen(!mobileOpen)}>
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="absolute top-full left-0 w-full glass-card py-4 flex flex-col items-center gap-4 md:hidden">
-          {links.map((link) => (
-            <Link key={link.name} href={link.href} onClick={() => setIsOpen(false)} className="text-base font-medium text-text-main">
-              {link.name}
+      {mobileOpen && (
+        <div className="absolute top-full left-0 w-full glass-card border-b p-6 flex flex-col gap-4 lg:hidden">
+          {siteConfig.navigation.map((link) => (
+            <Link 
+              key={link.href} 
+              href={link.href} 
+              onClick={() => setMobileOpen(false)}
+              className={`text-sm font-bold ${pathname === link.href ? "text-accent" : "text-text-main"}`}
+            >
+              {link.label}
             </Link>
           ))}
-        </motion.div>
+        </div>
       )}
     </nav>
   );
