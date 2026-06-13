@@ -2,73 +2,111 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
-import { siteConfig } from "@/data/site-config";
 import { motion, AnimatePresence } from "framer-motion";
+import { siteConfig } from "@/data/site-config";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  // Detect scroll for subtle header styling
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Lock background scrolling when menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [menuOpen]);
+
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? "glass-card py-4" : "bg-transparent py-6"}`}>
-      <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
-        <Link href="/" className="flex flex-col group">
-          <span className="text-base font-semibold tracking-tight text-primary group-hover:text-text-muted transition-colors">
-            {siteConfig.institution.abbr}
-          </span>
-        </Link>
-
-        {/* Desktop Minimal Nav */}
-        <div className="hidden lg:flex gap-8 items-center">
-          {siteConfig.navigation.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link 
-                key={link.href} 
-                href={link.href} 
-                className={`text-[13px] font-medium tracking-wide transition-all duration-300 ${isActive ? "text-primary" : "text-text-muted hover:text-primary"}`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </div>
-
-        <button className="lg:hidden text-text-muted hover:text-primary transition-colors" onClick={() => setMobileOpen(!mobileOpen)}>
-          {mobileOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}
-        </button>
-      </div>
-
-      {/* Mobile Menu with Framer Motion */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full left-0 w-full glass-card border-t border-border p-6 flex flex-col gap-5 lg:hidden"
+    <>
+      {/* 1. Ultra-Minimal Top Header */}
+      <nav 
+        className={`fixed w-full z-[60] transition-all duration-500 ${
+          scrolled && !menuOpen ? "bg-surface/80 backdrop-blur-md border-b border-border py-4 shadow-sm" : "bg-transparent py-6"
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
+          <Link 
+            href="/" 
+            className="flex flex-col relative z-[60]"
+            onClick={() => setMenuOpen(false)}
           >
-            {siteConfig.navigation.map((link) => (
-              <Link 
-                key={link.href} 
-                href={link.href} 
-                onClick={() => setMobileOpen(false)}
-                className={`text-sm font-medium ${pathname === link.href ? "text-primary" : "text-text-muted"}`}
-              >
-                {link.label}
-              </Link>
-            ))}
+            <span className={`text-base font-semibold tracking-tight transition-colors duration-500 ${
+              menuOpen ? "text-surface" : "text-primary"
+            }`}>
+              {siteConfig.institution.abbr}
+            </span>
+          </Link>
+
+          <button 
+            onClick={() => setMenuOpen(!menuOpen)}
+            className={`relative z-[60] text-[11px] font-medium uppercase tracking-widest transition-colors duration-500 ${
+              menuOpen ? "text-surface/70 hover:text-surface" : "text-text-muted hover:text-primary"
+            }`}
+          >
+            {menuOpen ? "Close" : "Menu"}
+          </button>
+        </div>
+      </nav>
+
+      {/* 2. Premium Full-Screen Menu Overlay */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: "-100%" }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-100%" }}
+            transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="fixed inset-0 z-50 bg-primary flex flex-col items-center justify-center px-6"
+          >
+            <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-6 gap-x-12">
+              {siteConfig.navigation.map((link, i) => {
+                const isActive = pathname === link.href;
+                return (
+                  <motion.div 
+                    key={link.href}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ delay: 0.3 + (i * 0.05), duration: 0.6, ease: "easeOut" }}
+                  >
+                    <Link 
+                      href={link.href}
+                      onClick={() => setMenuOpen(false)}
+                      className={`text-2xl md:text-3xl font-light tracking-tight transition-all duration-300 flex items-center gap-4 ${
+                        isActive ? "text-surface translate-x-2" : "text-surface/40 hover:text-surface hover:translate-x-2"
+                      }`}
+                    >
+                      {isActive && <span className="w-1.5 h-1.5 rounded-full bg-surface" />}
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Footer inside the menu for extra detail */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 0.5 }}
+              className="absolute bottom-10 left-0 w-full px-6 flex justify-between items-center max-w-6xl mx-auto text-[10px] uppercase tracking-widest text-surface/30"
+            >
+              <span>{siteConfig.institution.name}</span>
+              <span>Student Affairs Operations</span>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </>
   );
 }
