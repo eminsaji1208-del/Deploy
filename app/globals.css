@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme {
-  /* Pristine, minimalist light mode */
-  --color-background: #fafafa;
-  --color-surface: #ffffff;
-  --color-primary: #171717; /* Soft black for main headings */
-  --color-secondary: #262626;
-  --color-accent: #0a0a0a; /* True black for buttons/badges */
-  --color-text-main: #262626;
-  --color-text-muted: #737373; /* Elegant gray for reading text */
-  --color-border: #e5e5e5; /* Very subtle borders */
+  /* Premium Blue Aesthetic */
+  --color-background: #F4F7FB; /* Very soft icy blue-white */
+  --color-surface: #FFFFFF;
+  --color-primary: #0A192F; /* Deep, luxurious navy blue */
+  --color-secondary: #1E293B;
+  --color-accent: #0066FF; /* Vibrant, modern royal blue */
+  --color-text-main: #1E293B;
+  --color-text-muted: #64748B;
+  --color-border: #E2E8F0;
   
   --font-sans: var(--font-inter), sans-serif;
 }
@@ -26,11 +26,11 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-primary);
+  background-color: var(--color-accent);
   color: white;
 }
 
-/* Signature premium blur effect for navbars and cards */
+/* Upgraded Floating Glass Pill Effect */
 @utility glass-card {
-  @apply bg-surface/70 backdrop-blur-lg border border-border shadow-[0_2px_10px_rgba(0,0,0,0.02)];
+  @apply bg-surface/80 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(0,102,255,0.05)];
 }
