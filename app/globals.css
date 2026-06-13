@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 98%; /* Soft premium white/gray */
+    --surface: 0 0% 100%;
+    --primary: 222 47% 11%; /* Deep professional navy */
+    --secondary: 215 25% 27%;
+    --accent: 221 83% 53%; /* Modern vibrant blue */
+    --text-main: 222 47% 11%;
+    --text-muted: 215 16% 47%;
+    --border: 214 32% 91%;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-text-main antialiased selection:bg-accent selection:text-white;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-surface/80 backdrop-blur-md border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.04)];
+  }
+}
