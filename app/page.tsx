@@ -1,7 +1,7 @@
 "use client";
 import { siteConfig } from "@/data/site-config";
 import Link from "next/link";
-import { ArrowRight, MapPin, Navigation, ShieldCheck, HeartPulse, Zap } from "lucide-react";
+import { ArrowRight, Navigation, ShieldCheck, HeartPulse, Zap } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
 import AnimatedCard from "@/components/AnimatedCard";
 import MagneticElement from "@/components/MagneticElement";
@@ -10,6 +10,8 @@ import { useRef } from "react";
 
 export default function HomePage() {
   const containerRef = useRef(null);
+  
+  // Controls the Parallax scrolling effect on the hero image
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
@@ -24,20 +26,24 @@ export default function HomePage() {
   return (
     <div className="relative bg-background">
       
-      {/* 1. HERO SECTION */}
+      {/* --- 1. HERO SECTION --- */}
       <section ref={containerRef} className="relative h-[90vh] md:h-screen w-full overflow-hidden bg-primary flex items-center justify-center">
         <motion.div style={{ y, scale, opacity }} className="absolute inset-0 w-full h-full">
+          {/* Ensure your image is named iitp-hero.jpg inside the public folder */}
           <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/iitp-hero.jpg')" }} />
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/70 via-primary/40 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/50 to-background" />
         </motion.div>
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 text-center mt-16">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeOut" }}>
-            <h1 className="text-5xl md:text-8xl font-black text-white tracking-tight mb-6 drop-shadow-lg">
-              IIT PATNA
+            <span className="text-sm md:text-lg font-bold tracking-widest uppercase text-accent mb-4 block drop-shadow-md">
+              Indian Institute of Technology Patna
+            </span>
+            <h1 className="text-5xl md:text-7xl lg:text-9xl font-black text-white tracking-tight mb-6 drop-shadow-lg leading-none">
+              STUDENT<br />AFFAIRS
             </h1>
-            <p className="text-lg md:text-2xl text-white/90 max-w-2xl mx-auto font-light tracking-wide mb-10 drop-shadow-md">
-              {siteConfig.home.heroSubtitle}
+            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-light tracking-wide mb-10 drop-shadow-md">
+              The heartbeat of campus operations, technical incubation, and holistic welfare.
             </p>
           </motion.div>
 
@@ -57,7 +63,7 @@ export default function HomePage() {
 
       <div className="max-w-6xl mx-auto px-6 py-24 w-full relative z-20 bg-background space-y-32">
         
-        {/* 2. MAGNETIC ACTION BUTTONS */}
+        {/* --- 2. MAGNETIC ACTION BUTTONS --- */}
         <FadeIn delay={0.1}>
           <div className="flex flex-wrap items-center justify-center gap-6">
             <MagneticElement>
@@ -74,7 +80,7 @@ export default function HomePage() {
           </div>
         </FadeIn>
 
-        {/* 3. NEW: INTERACTIVE BENTO GRID FOR STUDENT AFFAIRS */}
+        {/* --- 3. INTERACTIVE BENTO GRID --- */}
         <div>
           <FadeIn>
             <div className="mb-12">
