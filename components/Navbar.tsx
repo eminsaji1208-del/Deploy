@@ -11,9 +11,16 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
 
+  // 1. SMART NAVBAR LOGIC: Check if we are on the homepage
+  const isHome = pathname === "/";
+  // 2. If we scrolled down OR if we are on any page other than home, make it solid
+  const isSolid = scrolled || !isHome;
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
+    // Run once on load to ensure it catches the right state
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -22,7 +29,7 @@ export default function Navbar() {
     else document.body.style.overflow = "unset";
   }, [menuOpen]);
 
-  // Anime.js hover effect (Disabled on mobile for performance/UX)
+  // Anime.js hover effect for desktop
   useEffect(() => {
     if (window.innerWidth > 768) {
       import("animejs").then((animeModule: any) => {
@@ -56,7 +63,7 @@ export default function Navbar() {
         <div className="max-w-6xl mx-auto flex justify-center">
           <div 
             className={`pointer-events-auto transition-all duration-500 flex justify-between items-center px-5 md:px-8 py-3 md:py-3.5 rounded-full ${
-              scrolled && !menuOpen 
+              isSolid && !menuOpen 
                 ? "glass-card w-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] bg-surface/90" 
                 : "w-full bg-transparent"
             }`}
@@ -72,12 +79,11 @@ export default function Navbar() {
                 <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-accent mb-0.5">
                   IIT Patna
                 </span>
+                {/* Color dynamically shifts from white to dark blue (primary) based on the page */}
                 <span className={`font-bold tracking-tight transition-colors duration-500 flex items-center ${
-                  menuOpen ? "text-white" : scrolled ? "text-primary" : "text-white"
+                  menuOpen ? "text-white" : isSolid ? "text-primary" : "text-white"
                 }`}>
-                  {/* Mobile Truncation */}
                   <span className="text-sm sm:hidden">SAO</span>
-                  {/* Desktop Full Text */}
                   <span className="hidden sm:flex text-sm md:text-base">
                     {brandName.split("").map((char, i) => (
                       <span key={i} className="nav-letter inline-block whitespace-pre">{char}</span>
@@ -89,11 +95,11 @@ export default function Navbar() {
 
             {/* Right Side Actions */}
             <div className="flex items-center gap-4 md:gap-6 relative z-[60]">
-              <a href={mapLink} target="_blank" rel="noopener noreferrer" className={`hidden md:flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest transition-colors duration-500 hover:text-accent ${menuOpen ? "text-white/70" : scrolled ? "text-text-muted" : "text-white/80"}`}>
+              <a href={mapLink} target="_blank" rel="noopener noreferrer" className={`hidden md:flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest transition-colors duration-500 hover:text-accent ${menuOpen ? "text-white/70" : isSolid ? "text-text-muted" : "text-white/80"}`}>
                 <MapPin size={14} /> View Campus
               </a>
-              <div className={`hidden md:block w-[1px] h-4 ${menuOpen ? "bg-white/20" : scrolled ? "bg-border" : "bg-white/20"}`} />
-              <button onClick={() => setMenuOpen(!menuOpen)} className={`text-[10px] md:text-[11px] font-bold uppercase tracking-widest px-2 py-1 transition-colors duration-500 ${menuOpen ? "text-white hover:text-highlight" : scrolled ? "text-primary hover:text-accent" : "text-white hover:text-accent"}`}>
+              <div className={`hidden md:block w-[1px] h-4 ${menuOpen ? "bg-white/20" : isSolid ? "bg-border" : "bg-white/20"}`} />
+              <button onClick={() => setMenuOpen(!menuOpen)} className={`text-[10px] md:text-[11px] font-bold uppercase tracking-widest px-2 py-1 transition-colors duration-500 ${menuOpen ? "text-white hover:text-highlight" : isSolid ? "text-primary hover:text-accent" : "text-white hover:text-accent"}`}>
                 {menuOpen ? "Close" : "Menu"}
               </button>
             </div>
