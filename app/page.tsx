@@ -1,146 +1,141 @@
 "use client";
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import { siteConfig } from "@/data/site-config";
-import { ArrowRight, MapPin } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Navigation, ShieldCheck, HeartPulse, Zap, Users } from "lucide-react";
+import FadeIn from "@/components/FadeIn";
+import AnimatedCard from "@/components/AnimatedCard";
+import MagneticElement from "@/components/MagneticElement";
+import AnimeOrganicShape from "@/components/AnimeOrganicShape";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
-export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
+export default function HomePage() {
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (menuOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "unset";
-  }, [menuOpen]);
-
-  // Anime.js hover effect (Disabled on mobile for performance/UX)
-  useEffect(() => {
-    if (window.innerWidth > 768) {
-      import("animejs").then((animeModule: any) => {
-        const anime = animeModule.default || animeModule;
-        const letters = document.querySelectorAll(".nav-letter");
-        const brandContainer = document.getElementById("brand-container");
-
-        const playAnimation = () => {
-          anime({
-            targets: letters,
-            translateY: [-4, 0],
-            scale: [1.1, 1],
-            delay: anime.stagger(25),
-            duration: 600,
-            easing: "easeOutElastic(1, .5)"
-          });
-        };
-
-        brandContainer?.addEventListener("mouseenter", playAnimation);
-        return () => brandContainer?.removeEventListener("mouseenter", playAnimation);
-      });
-    }
-  }, []);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   const mapLink = "https://www.google.com/maps/place/Indian+Institute+of+Technology+Patna";
-  const brandName = "Student Affairs Office";
 
   return (
-    <>
-      <nav className="fixed top-0 left-0 w-full z-[60] pt-4 md:pt-6 px-4 md:px-6 pointer-events-none">
-        <div className="max-w-6xl mx-auto flex justify-center">
-          <div 
-            className={`pointer-events-auto transition-all duration-500 flex justify-between items-center px-5 md:px-8 py-3 md:py-3.5 rounded-full ${
-              scrolled && !menuOpen 
-                ? "glass-card w-full shadow-[0_8px_30px_rgb(0,0,0,0.08)] bg-surface/90" 
-                : "w-full bg-transparent"
-            }`}
-          >
-            {/* Mobile-Responsive Logo Block */}
-            <Link href="/" id="brand-container" className="flex items-center gap-3 relative z-[60]" onClick={() => setMenuOpen(false)}>
-              <div className="w-8 h-8 md:w-10 md:h-10 shrink-0 rounded-lg bg-white shadow-sm flex items-center justify-center overflow-hidden border border-border">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/iitp-logo.png" alt="IIT Patna" className="w-6 h-6 md:w-8 md:h-8 object-contain" />
-              </div>
+    <div className="relative bg-background overflow-hidden w-full">
+      
+      {/* 1. HERO SECTION - Uses dynamic viewport heights for perfect mobile fitting */}
+      <section ref={containerRef} className="relative h-[90dvh] sm:h-screen w-full overflow-hidden bg-primary flex items-center justify-center">
+        <motion.div style={{ y, scale, opacity }} className="absolute inset-0 w-full h-full">
+          <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/iitp-hero.jpg')" }} />
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/90 via-primary/60 to-background" />
+        </motion.div>
 
-              <div className="flex flex-col">
-                <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-accent mb-0.5">
-                  IIT Patna
-                </span>
-                <span className={`font-bold tracking-tight transition-colors duration-500 flex items-center ${
-                  menuOpen ? "text-white" : scrolled ? "text-primary" : "text-white"
-                }`}>
-                  {/* Mobile Truncation */}
-                  <span className="text-sm sm:hidden">SAO</span>
-                  {/* Desktop Full Text */}
-                  <span className="hidden sm:flex text-sm md:text-base">
-                    {brandName.split("").map((char, i) => (
-                      <span key={i} className="nav-letter inline-block whitespace-pre">{char}</span>
-                    ))}
-                  </span>
-                </span>
-              </div>
-            </Link>
+        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 text-center mt-12">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <span className="text-xs sm:text-sm font-bold tracking-widest uppercase text-highlight mb-3 block drop-shadow-md">
+              Indian Institute of Technology Patna
+            </span>
+            {/* Highly adaptive heading sizing eliminates mobile overlap */}
+            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black text-white tracking-tight mb-6 leading-[1.1] drop-shadow-lg">
+              STUDENT<br className="hidden sm:block" /> AFFAIRS
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg text-white/90 max-w-2xl mx-auto font-light tracking-wide mb-8 px-2">
+              Empowering the people behind the technology. We foster community, mental wellness, and global leadership.
+            </p>
+          </motion.div>
 
-            {/* Right Side Actions */}
-            <div className="flex items-center gap-4 md:gap-6 relative z-[60]">
-              <a href={mapLink} target="_blank" rel="noopener noreferrer" className={`hidden md:flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest transition-colors duration-500 hover:text-accent ${menuOpen ? "text-white/70" : scrolled ? "text-text-muted" : "text-white/80"}`}>
-                <MapPin size={14} /> View Campus
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }} className="flex justify-center px-4">
+            <MagneticElement>
+              <a href={mapLink} target="_blank" rel="noopener noreferrer" className="group relative inline-flex items-center gap-3 px-5 py-3 sm:px-6 sm:py-3.5 glass-card rounded-full overflow-hidden transition-all text-xs sm:text-sm font-semibold text-white">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-highlight text-primary flex items-center justify-center">
+                  <Navigation size={12} className="group-hover:rotate-45 transition-transform duration-300" />
+                </div>
+                <span>View Campus on Maps</span>
               </a>
-              <div className={`hidden md:block w-[1px] h-4 ${menuOpen ? "bg-white/20" : scrolled ? "bg-border" : "bg-white/20"}`} />
-              <button onClick={() => setMenuOpen(!menuOpen)} className={`text-[10px] md:text-[11px] font-bold uppercase tracking-widest px-2 py-1 transition-colors duration-500 ${menuOpen ? "text-white hover:text-highlight" : scrolled ? "text-primary hover:text-accent" : "text-white hover:text-accent"}`}>
-                {menuOpen ? "Close" : "Menu"}
-              </button>
+            </MagneticElement>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 2. BODY CONTENT SECTION */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 md:py-24 w-full relative z-20 bg-background space-y-20 md:space-y-32">
+        
+        {/* ACTION BUTTON PACKS - Stacks vertically on tiny viewports */}
+        <FadeIn>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-xs sm:max-w-none mx-auto">
+            <Link href="/welfare" className="w-full sm:w-auto text-center px-8 py-4 bg-accent text-white font-medium rounded-full shadow-lg text-sm hover:bg-accent/90 transition-colors">
+              Access Student Welfare
+            </Link>
+            <Link href="/about" className="w-full sm:w-auto text-center px-8 py-4 bg-transparent border border-secondary text-primary font-medium rounded-full hover:bg-surface transition-colors text-sm flex items-center justify-center gap-2 group">
+              Meet The Administration <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform text-accent" />
+            </Link>
+          </div>
+        </FadeIn>
+
+        {/* BENTO EXPERIENCE AREA */}
+        <div className="relative w-full">
+          <AnimeOrganicShape className="w-[300px] h-[300px] md:w-[600px] md:h-[600px] top-[-100px] left-[-50px] md:left-[-150px] opacity-40" />
+          
+          <FadeIn>
+            <div className="mb-10 text-center md:text-left relative z-10">
+              <h2 className="text-[10px] md:text-[11px] font-bold text-accent uppercase tracking-widest mb-2 flex items-center justify-center md:justify-start gap-2">
+                <Users size={14} /> Our Community
+              </h2>
+              <h3 className="text-2xl sm:text-3xl md:text-5xl font-semibold text-primary tracking-tight max-w-2xl">
+                Built for the students, driven by human ambition.
+              </h3>
+            </div>
+          </FadeIn>
+
+          {/* Grid architecture maps explicitly to 1 column on smartphones, 3 columns on desktops */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 relative z-10 w-full">
+            
+            <FadeIn className="md:col-span-2">
+              <AnimatedCard className="h-full p-6 md:p-10 bg-surface/90 backdrop-blur-sm border-border">
+                <ShieldCheck className="text-accent mb-4 md:mb-6" size={28} />
+                <h4 className="text-lg md:text-2xl font-semibold text-primary mb-3 tracking-tight">Student Advocacy & Protection</h4>
+                <p className="text-text-muted leading-relaxed font-light text-xs sm:text-sm md:text-base">
+                  Beyond administration, we are your primary advocates. Whether it is ensuring absolute campus safety, mediating grievances, or securing infrastructure for your clubs, our office stands entirely behind the student body.
+                </p>
+              </AnimatedCard>
+            </FadeIn>
+
+            <FadeIn>
+              <AnimatedCard className="h-full p-6 md:p-8 flex flex-col justify-between bg-surface/90 backdrop-blur-sm border-border">
+                <div>
+                  <HeartPulse className="text-accent mb-4" size={24} />
+                  <h4 className="text-base md:text-lg font-semibold text-primary mb-2">Holistic Wellness</h4>
+                  <p className="text-xs sm:text-sm text-text-muted font-light leading-relaxed">
+                    Engineering is demanding. We provide entirely confidential, professional psychological counseling and peer-to-peer emotional support networks.
+                  </p>
+                </div>
+                <Link href="/welfare" className="mt-6 text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-accent flex items-center gap-2 group-hover:translate-x-1 transition-all">
+                  Speak to a Counselor <ArrowRight size={12} />
+                </Link>
+              </AnimatedCard>
+            </FadeIn>
+
+            <FadeIn className="md:col-span-3">
+              <AnimatedCard className="p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 bg-primary text-white border-none">
+                <div className="w-full text-center md:text-left">
+                  <Zap className="text-highlight mb-3 mx-auto md:mx-0" size={24} />
+                  <h4 className="text-lg md:text-2xl font-semibold mb-2">Vibrant Campus Culture</h4>
+                  <p className="text-white/70 font-light leading-relaxed text-xs sm:text-sm">
+                    From cutting-edge robotics hackathons to massive cultural festivals, we fund and orchestrate the ecosystems where brilliant minds connect outside the classroom.
+                  </p>
+                </div>
+                <Link href="/campus-life" className="w-full md:w-auto shrink-0 px-6 py-3 sm:px-8 sm:py-4 bg-highlight text-primary text-center font-bold rounded-full hover:bg-white transition-colors text-xs sm:text-sm">
+                  Explore Campus Life
+                </Link>
+              </FadeIn>
+
             </div>
           </div>
         </div>
-      </nav>
 
-      {/* Mobile-Friendly Scrolling Menu Overlay */}
-      <AnimatePresence>
-        {menuOpen && (
-           <motion.div initial={{ opacity: 0, y: "-100%" }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: "-100%" }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }} className="fixed inset-0 z-50 bg-primary overflow-y-auto">
-             <div className="w-full max-w-6xl mx-auto px-6 grid md:grid-cols-12 gap-8 md:gap-16 pt-32 pb-20 min-h-screen">
-               
-               <div className="md:col-span-7 flex flex-col justify-center">
-                 <p className="text-highlight text-[10px] font-bold uppercase tracking-widest mb-6 md:mb-8">Navigation Directory</p>
-                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 md:gap-y-6 gap-x-12">
-                   {siteConfig.navigation.map((link, i) => (
-                     <motion.div key={link.href} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 + (i * 0.03), duration: 0.4 }}>
-                       <Link href={link.href} onClick={() => setMenuOpen(false)} className={`text-xl md:text-2xl font-light tracking-wide transition-all duration-300 flex items-center group ${pathname === link.href ? "text-white" : "text-white/50 hover:text-white"}`}>
-                         <span className={`transition-all duration-300 overflow-hidden flex items-center ${pathname === link.href ? "w-6 opacity-100" : "w-0 opacity-0 group-hover:w-6 group-hover:opacity-100"}`}>
-                           <ArrowRight className="text-highlight shrink-0" size={16} />
-                         </span>
-                         {link.label}
-                       </Link>
-                     </motion.div>
-                   ))}
-                 </div>
-               </div>
-
-               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.6 }} className="md:col-span-5 flex flex-col justify-center md:border-l border-white/10 md:pl-16 mt-8 md:mt-0">
-                 <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-2xl mb-8">
-                   <h3 className="text-white text-lg font-semibold mb-2">Student Affairs Newsletter</h3>
-                   <p className="text-white/50 text-xs mb-6 leading-relaxed font-light">Subscribe for urgent administrative announcements directly to your inbox.</p>
-                   <div className="relative">
-                     <input type="email" placeholder="University Email" className="w-full bg-transparent border-b border-white/20 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-highlight transition-colors rounded-none" />
-                     <button className="absolute right-0 top-1 text-highlight hover:text-white transition-colors text-[10px] font-bold uppercase tracking-widest">Subscribe</button>
-                   </div>
-                 </div>
-                 <div>
-                   <p className="text-white text-base">{siteConfig.contact.email}</p>
-                   <p className="text-white/50 text-xs mt-1 font-mono">{siteConfig.contact.phone}</p>
-                 </div>
-               </motion.div>
-             </div>
-           </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+      </div>
+    </div>
   );
 }

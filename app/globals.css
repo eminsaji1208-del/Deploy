@@ -1,40 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  /* "Fall Blues" Extracted Color Palette */
-  --color-background: #F4F9F9; /* An ultra-light tint of the aqua for a clean background */
+  --color-background: #F4F9F9;
   --color-surface: #FFFFFF;
-  
-  --color-primary: #12294A; /* Color 5: Deepest Navy (Headings & Overlays) */
-  --color-secondary: #223C5B; /* Color 3: Slate Navy */
-  --color-accent: #0F5B96; /* Color 2: Ocean Blue (Buttons & Interactions) */
-  --color-highlight: #89CEDB; /* Color 1: Sky Blue (Glows & Accents) */
-  --color-muted: #A9E0D9; /* Color 4: Mint Aqua (Subtle borders) */
+  --color-primary: #12294A;
+  --color-secondary: #223C5B;
+  --color-accent: #0F5B96;
+  --color-highlight: #89CEDB;
+  --color-muted: #A9E0D9;
   
   --color-text-main: #12294A;
   --color-text-muted: #567189;
   --color-border: #DDE8EA;
-  
-  --font-sans: var(--font-inter), sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
+  /* Prevents unwanted horizontal structural shaking on mobile swipe */
+  overflow-x: hidden;
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-text-main);
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-::selection {
-  background-color: var(--color-accent);
-  color: white;
-}
-
-/* Upgraded Floating Glass Pill Effect */
-@utility glass-card {
-  @apply bg-surface/90 backdrop-blur-xl border border-white/60 shadow-[0_8px_32px_rgba(15,91,150,0.08)];
+  overflow-x: hidden;
 }
