@@ -1,17 +1,17 @@
 "use client";
 import { siteConfig } from "@/data/site-config";
 import Link from "next/link";
-import { ArrowRight, Navigation, ShieldCheck, HeartPulse, Zap } from "lucide-react";
+import { ArrowRight, Navigation, ShieldCheck, HeartPulse, Zap, Users } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
 import AnimatedCard from "@/components/AnimatedCard";
 import MagneticElement from "@/components/MagneticElement";
+import AnimeOrganicShape from "@/components/AnimeOrganicShape";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 export default function HomePage() {
   const containerRef = useRef(null);
   
-  // Controls the Parallax scrolling effect on the hero image
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
@@ -24,12 +24,11 @@ export default function HomePage() {
   const mapLink = "https://www.google.com/maps/place/Indian+Institute+of+Technology+Patna";
 
   return (
-    <div className="relative bg-background">
+    <div className="relative bg-background overflow-hidden">
       
       {/* --- 1. HERO SECTION --- */}
       <section ref={containerRef} className="relative h-[90vh] md:h-screen w-full overflow-hidden bg-primary flex items-center justify-center">
         <motion.div style={{ y, scale, opacity }} className="absolute inset-0 w-full h-full">
-          {/* Ensure your image is named iitp-hero.jpg inside the public folder */}
           <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/iitp-hero.jpg')" }} />
           <div className="absolute inset-0 bg-gradient-to-b from-primary/80 via-primary/50 to-background" />
         </motion.div>
@@ -43,7 +42,7 @@ export default function HomePage() {
               STUDENT<br />AFFAIRS
             </h1>
             <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto font-light tracking-wide mb-10 drop-shadow-md">
-              The heartbeat of campus operations, technical incubation, and holistic welfare.
+              Empowering the people behind the technology. We foster community, mental wellness, and global leadership.
             </p>
           </motion.div>
 
@@ -68,85 +67,78 @@ export default function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-6">
             <MagneticElement>
               <Link href="/welfare" className="block px-8 py-4 bg-accent text-white font-medium rounded-full shadow-[0_8px_20px_0_rgba(0,102,255,0.25)] text-sm">
-                Access Student Resources
+                Access Student Welfare
               </Link>
             </MagneticElement>
             
             <MagneticElement>
               <Link href="/about" className="block px-8 py-4 bg-transparent border border-border text-text-main font-medium rounded-full hover:bg-surface transition-colors text-sm flex items-center gap-2 group">
-                Our Administrative Strategy <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform text-accent" />
+                Meet The Administration <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform text-accent" />
               </Link>
             </MagneticElement>
           </div>
         </FadeIn>
 
-        {/* --- 3. INTERACTIVE BENTO GRID --- */}
-        <div>
+        {/* --- 3. NEW: HUMAN-CENTRIC COMMUNITY SECTION --- */}
+        <div className="relative">
+          {/* The new Anime.js breathing shape injected behind the content */}
+          <AnimeOrganicShape className="w-[600px] h-[600px] top-[-100px] left-[-200px]" />
+          
           <FadeIn>
-            <div className="mb-12">
-              <h2 className="text-[11px] font-bold text-accent uppercase tracking-widest mb-3">Office of Student Affairs</h2>
-              <h3 className="text-3xl md:text-5xl font-semibold text-primary tracking-tight">The Heartbeat of Campus Operations.</h3>
+            <div className="mb-12 relative z-10">
+              <h2 className="text-[11px] font-bold text-accent uppercase tracking-widest mb-3 flex items-center gap-2">
+                <Users size={14} /> Our Community
+              </h2>
+              <h3 className="text-3xl md:text-5xl font-semibold text-primary tracking-tight max-w-2xl">
+                Built for the students, driven by human ambition.
+              </h3>
             </div>
           </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Large Feature Card */}
+          <div className="grid md:grid-cols-3 gap-6 relative z-10">
+            {/* Welfare & Advocacy */}
             <FadeIn delay={0.2} className="md:col-span-2">
-              <AnimatedCard className="h-full p-10 bg-gradient-to-br from-surface to-background relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl group-hover:bg-accent/10 transition-colors duration-700" />
+              <AnimatedCard className="h-full p-10 bg-surface/80 backdrop-blur-sm border-border relative overflow-hidden group">
                 <ShieldCheck className="text-accent mb-6" size={32} />
-                <h4 className="text-2xl font-semibold text-primary mb-4 tracking-tight">Comprehensive Student Advocacy</h4>
+                <h4 className="text-2xl font-semibold text-primary mb-4 tracking-tight">Student Advocacy & Protection</h4>
                 <p className="text-text-muted leading-relaxed font-light max-w-lg">
-                  The Student Affairs Office serves as the primary bridge between academic rigor and personal development. We govern club activities, secure funding for technical projects, and enforce strict anti-ragging protocols to ensure a thriving, safe ecosystem.
+                  Beyond administration, we are your primary advocates. Whether it is ensuring absolute campus safety, mediating grievances, or securing infrastructure for your clubs, our office stands entirely behind the student body.
                 </p>
               </AnimatedCard>
             </FadeIn>
 
-            {/* Small Card 1 */}
+            {/* Mental Health */}
             <FadeIn delay={0.3}>
-              <AnimatedCard className="h-full p-8 flex flex-col justify-between group">
+              <AnimatedCard className="h-full p-8 flex flex-col justify-between group bg-surface/80 backdrop-blur-sm">
                 <div>
                   <HeartPulse className="text-accent mb-4" size={24} />
-                  <h4 className="text-lg font-semibold text-primary mb-2">Mental Wellness</h4>
+                  <h4 className="text-lg font-semibold text-primary mb-2">Holistic Wellness</h4>
                   <p className="text-sm text-text-muted font-light leading-relaxed">
-                    24/7 access to professional psychiatric evaluation and peer mentorship programs.
+                    Engineering is demanding. We provide entirely confidential, professional psychological counseling and peer-to-peer emotional support networks.
                   </p>
                 </div>
                 <Link href="/welfare" className="mt-6 text-[11px] font-bold uppercase tracking-widest text-accent flex items-center gap-2 group-hover:translate-x-2 transition-transform">
-                  Get Support <ArrowRight size={12} />
+                  Speak to a Counselor <ArrowRight size={12} />
                 </Link>
               </AnimatedCard>
             </FadeIn>
 
-            {/* Small Card 2 */}
-            <FadeIn delay={0.4}>
-              <AnimatedCard className="h-full p-8 flex flex-col justify-between group md:col-span-1">
-                <div>
+            {/* Campus Life / Clubs */}
+            <FadeIn delay={0.4} className="md:col-span-3">
+              <AnimatedCard className="p-10 flex flex-col md:flex-row items-center justify-between gap-8 group bg-primary text-white">
+                <div className="max-w-2xl">
                   <Zap className="text-accent mb-4" size={24} />
-                  <h4 className="text-lg font-semibold text-primary mb-2">Technical Incubation</h4>
-                  <p className="text-sm text-text-muted font-light leading-relaxed">
-                    Financial grants and laboratory access for IoT, Machine Learning, and Engineering collectives.
+                  <h4 className="text-2xl font-semibold mb-3">Vibrant Campus Culture</h4>
+                  <p className="text-white/70 font-light leading-relaxed">
+                    From cutting-edge robotics hackathons to massive cultural festivals, we fund and orchestrate the ecosystems where brilliant minds connect outside the classroom.
                   </p>
                 </div>
-                <Link href="/initiatives" className="mt-6 text-[11px] font-bold uppercase tracking-widest text-accent flex items-center gap-2 group-hover:translate-x-2 transition-transform">
-                  View Initiatives <ArrowRight size={12} />
+                <Link href="/campus-life" className="shrink-0 px-8 py-4 bg-white text-primary font-bold rounded-full hover:bg-accent hover:text-white transition-colors text-sm">
+                  Explore Campus Life
                 </Link>
               </AnimatedCard>
             </FadeIn>
 
-            {/* Statistics Banner */}
-            <FadeIn delay={0.5} className="md:col-span-2">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-8 border border-border bg-surface rounded-2xl">
-                {siteConfig.home.stats.map((stat, i) => (
-                  <div key={i} className="text-center md:text-left md:border-r border-border last:border-0 md:pr-4">
-                    <p className="text-2xl font-semibold text-primary mb-1 tracking-tight">{stat.metric}</p>
-                    <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest leading-relaxed">
-                      {stat.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </FadeIn>
           </div>
         </div>
 

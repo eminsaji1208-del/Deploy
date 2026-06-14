@@ -66,7 +66,7 @@ export default function Navbar() {
                 {/* Replace this img src with your actual IITP logo if you upload one to /public */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img 
-                  src="https://upload.wikimedia.org/wikipedia/en/thumb/5/52/Indian_Institute_of_Technology_Patna_Logo.svg/1200px-Indian_Institute_of_Technology_Patna_Logo.svg.png" 
+                  src="/iitp-logo.png/"
                   alt="IIT Patna Logo" 
                   className="w-8 h-8 object-contain"
                 />
