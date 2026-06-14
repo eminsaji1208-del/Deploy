@@ -13,7 +13,7 @@ export default function CustomCursor() {
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      // Check if hovering over a link, button, or anything clickable
+      // Trigger hover state for links, buttons, and details (FAQs)
       if (target.closest("a") || target.closest("button") || target.closest("details")) {
         setIsHovering(true);
       } else {
@@ -31,21 +31,30 @@ export default function CustomCursor() {
   }, []);
 
   return (
-    <motion.div
-      className="fixed top-0 left-0 w-6 h-6 rounded-full border border-accent pointer-events-none z-[100] hidden md:flex items-center justify-center mix-blend-difference"
-      animate={{
-        x: mousePosition.x - 12,
-        y: mousePosition.y - 12,
-        scale: isHovering ? 2.5 : 1,
-        backgroundColor: isHovering ? "rgba(0, 102, 255, 0.2)" : "transparent",
-      }}
-      transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
-    >
-      <motion.div 
-        className="w-1.5 h-1.5 bg-accent rounded-full"
-        animate={{ scale: isHovering ? 0 : 1 }}
-        transition={{ duration: 0.2 }}
+    <>
+      {/* Tiny fast center dot */}
+      <motion.div
+        className="fixed top-0 left-0 w-1.5 h-1.5 bg-accent rounded-full pointer-events-none z-[100] hidden md:block"
+        animate={{
+          x: mousePosition.x - 3,
+          y: mousePosition.y - 3,
+          opacity: isHovering ? 0 : 1,
+        }}
+        transition={{ type: "tween", ease: "linear", duration: 0 }}
       />
-    </motion.div>
+      
+      {/* Smooth trailing ring */}
+      <motion.div
+        className="fixed top-0 left-0 w-8 h-8 border border-accent/60 rounded-full pointer-events-none z-[100] hidden md:flex items-center justify-center"
+        animate={{
+          x: mousePosition.x - 16,
+          y: mousePosition.y - 16,
+          scale: isHovering ? 1.8 : 1,
+          backgroundColor: isHovering ? "rgba(0, 102, 255, 0.08)" : "transparent",
+          borderColor: isHovering ? "rgba(0, 102, 255, 0)" : "rgba(0, 102, 255, 0.6)",
+        }}
+        transition={{ type: "spring", stiffness: 250, damping: 20, mass: 0.5 }}
+      />
+    </>
   );
 }
