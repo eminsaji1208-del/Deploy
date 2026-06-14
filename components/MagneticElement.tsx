@@ -2,7 +2,7 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 
-export default function MagneticElement({ children }: { children: React.ReactNode }) {
+export default function MagneticElement({ children, className = "" }: { children: React.ReactNode, className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
@@ -12,7 +12,6 @@ export default function MagneticElement({ children }: { children: React.ReactNod
     const middleX = clientX - (left + width / 2);
     const middleY = clientY - (top + height / 2);
     
-    // The multiplier (0.2) dictates how strongly the button pulls toward the mouse
     setPosition({ x: middleX * 0.2, y: middleY * 0.2 });
   };
 
@@ -27,7 +26,7 @@ export default function MagneticElement({ children }: { children: React.ReactNod
       onMouseLeave={reset}
       animate={{ x: position.x, y: position.y }}
       transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
-      className="inline-block"
+      className={`inline-block ${className}`}
     >
       {children}
     </motion.div>
