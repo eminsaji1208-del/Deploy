@@ -18,6 +18,10 @@ export const siteConfig = {
     emergency: "+91-612-255-2999",
     address: "Office of Student Affairs, Admin Block, IIT Patna, Bihta, Bihar 801106"
   },
+  emergency: {
+    security: "+91-612-255-2999",
+    medical: "+91-612-255-2000",
+  },
   navigation: [
     { label: "Home", href: "/" },
     { label: "Vision & Mission", href: "/vision-mission" },
