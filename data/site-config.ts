@@ -5,6 +5,12 @@ export const siteConfig = {
     title: "Student Affairs Office | IIT Patna",
     description: "The official portal for student welfare, Gymkhana, and campus life at the Indian Institute of Technology Patna.",
   },
+
+  institution: {
+    name: "Indian Institute of Technology Patna",
+    office: "Student Affairs Office",
+  },
+
   contact: {
     email: "dosa@iitp.ac.in",
     studentEmail: "gymkhana@iitp.ac.in",
@@ -34,27 +40,27 @@ export const siteConfig = {
       { metric: "24/7", label: "Medical & Welfare Support" }
     ]
   },
-  
+
   // REAL IIT PATNA FESTIVALS
   festivals: [
-    { 
-      id: "anwesha", 
-      title: "Anwesha", 
-      subtitle: "Annual Cultural Fest", 
+    {
+      id: "anwesha",
+      title: "Anwesha",
+      subtitle: "Annual Cultural Fest",
       desc: "IIT Patna's flagship cultural extravaganza. A 3-day multi-city festival featuring Pro-Nites, Syrics dance competitions, and global artist headliners.",
       link: "https://anwesha.live"
     },
-    { 
-      id: "celesta", 
-      title: "Celesta", 
-      subtitle: "Annual Techno-Management Fest", 
+    {
+      id: "celesta",
+      title: "Celesta",
+      subtitle: "Annual Techno-Management Fest",
       desc: "The ultimate technical summit featuring national-level hackathons, robotics wars, and guest lectures from industry pioneers.",
       link: "https://celesta.org.in"
     },
-    { 
-      id: "infinito", 
-      title: "Infinito", 
-      subtitle: "Annual Sports Fest", 
+    {
+      id: "infinito",
+      title: "Infinito",
+      subtitle: "Annual Sports Fest",
       desc: "Bringing together the finest athletes from technical institutes across India for highly competitive athletics, basketball, and e-sports tournaments.",
       link: "https://infinito.iitp.ac.in"
     }
@@ -74,39 +80,39 @@ export const siteConfig = {
 
   // AUTHENTIC TECHNICAL INITIATIVES
   initiatives: [
-    { 
-      title: "IoT & Robotics MakerSpace", 
-      desc: "Equipped with 3D printers, CNC machines, and embedded systems. Open 24/7 for sanctioned Student Gymkhana projects." 
+    {
+      title: "IoT & Robotics MakerSpace",
+      desc: "Equipped with 3D printers, CNC machines, and embedded systems. Open 24/7 for sanctioned Student Gymkhana projects."
     },
-    { 
-      title: "Hackathon Collectives", 
-      desc: "Dedicated funding and mentoring for competitive coding teams and innovation pods, including distinguished groups like the Anantavyomah collective." 
+    {
+      title: "Hackathon Collectives",
+      desc: "Dedicated funding and mentoring for competitive coding teams and innovation pods, including distinguished groups like the Anantavyomah collective."
     },
-    { 
-      title: "AI & Data Sandbox", 
-      desc: "Exclusive access to high-performance computing clusters and cloud credits tailored for complex machine learning models." 
+    {
+      title: "AI & Data Sandbox",
+      desc: "Exclusive access to high-performance computing clusters and cloud credits tailored for complex machine learning models."
     }
   ],
 
   // AUTHENTIC EXTERNAL PORTAL LINKS
   externalLinks: [
-    { 
-      title: "Academic Portal (MIS)", 
+    {
+      title: "Academic Portal (MIS)",
       desc: "The central hub for IITP students to check grades, register for courses, and manage fee structures.",
       url: "https://mis.iitp.ac.in/"
     },
-    { 
-      title: "IITP Webmail", 
+    {
+      title: "IITP Webmail",
       desc: "Access your official @iitp.ac.in institutional email via the Zimbra web client.",
       url: "https://webmail.iitp.ac.in/"
     },
-    { 
-      title: "Central Library (E-Resources)", 
+    {
+      title: "Central Library (E-Resources)",
       desc: "Remote access to IEEE Xplore, ScienceDirect, and the IIT Patna digital repository.",
       url: "https://library.iitp.ac.in/"
     },
-    { 
-      title: "Primary Health Centre (PHC)", 
+    {
+      title: "Primary Health Centre (PHC)",
       desc: "Details on campus medical staff, visiting specialists, and ambulance dispatch.",
       url: "https://www.iitp.ac.in/index.php/en-us/facilities/medical-facilities"
     }
