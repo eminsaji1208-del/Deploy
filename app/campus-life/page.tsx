@@ -7,17 +7,16 @@ import AnimatedCard from "@/components/AnimatedCard";
 import AnimeOrganicShape from "@/components/AnimeOrganicShape";
 
 const festivals = [
-  { id: "anwesha", title: "Anwesha", subtitle: "Annual Cultural Fest", desc: "A 3-day extravaganza of music, dance, and arts drawing 30,000+ footfalls across India.", icon: Music, color: "bg-rose-500" },
-  { id: "celesta", title: "Celesta", subtitle: "Annual Techno-Management Fest", desc: "Hackathons, robotics, and guest lectures from industry giants.", icon: Cpu, color: "bg-blue-600" },
-  { id: "infinito", title: "Infinito", subtitle: "Annual Sports Fest", desc: "Inter-collegiate athletics, e-sports, and traditional tournaments.", icon: Trophy, color: "bg-emerald-500" }
+  { id: "anwesha", title: "Anwesha", subtitle: "Annual Cultural Fest", desc: "IIT Patna's flagship 3-day multi-city cultural festival featuring Pro-Nites and global artist headliners.", icon: Music, color: "bg-rose-500" },
+  { id: "celesta", title: "Celesta", subtitle: "Annual Techno-Management Fest", desc: "The ultimate technical summit featuring national-level hackathons and robotics wars.", icon: Cpu, color: "bg-blue-600" },
+  { id: "infinito", title: "Infinito", subtitle: "Annual Sports Fest", desc: "Bringing together the finest athletes from technical institutes for competitive sports tournaments.", icon: Trophy, color: "bg-emerald-500" }
 ];
 
 const clubs = [
-  { name: "Robotics Club", icon: Cpu }, { name: "NJACK (Computer Science)", icon: Code },
+  { name: "NJACK (Computer Science)", icon: Code }, { name: "Sparkonics (Electronics)", icon: Cpu },
   { name: "Aria (Music Society)", icon: Mic }, { name: "Yavanika (Dramatics)", icon: Palette },
-  { name: "Pixels (Photography)", icon: Camera }, { name: "Model United Nations", icon: Globe }
+  { name: "Pixels (Photography)", icon: Camera }, { name: "House of Words", icon: Globe }
 ];
-
 export default function CampusLifePage() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });

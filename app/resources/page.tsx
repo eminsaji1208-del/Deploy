@@ -7,16 +7,16 @@ import AnimatedCard from "@/components/AnimatedCard";
 import AnimeOrganicShape from "@/components/AnimeOrganicShape";
 
 const documents = [
-  { title: "Student Gymkhana Constitution", size: "2.4 MB PDF", date: "Updated 2025" },
-  { title: "Anti-Ragging Affidavit", size: "1.1 MB PDF", date: "Mandatory" },
-  { title: "Hostel Allotment Rulebook", size: "3.5 MB PDF", date: "Updated 2024" },
-  { title: "Club Funding Request Form", size: "0.8 MB DOCX", date: "Fillable" }
+  { title: "IIT Patna UG Rulebook (B.Tech)", size: "4.2 MB PDF", date: "Updated 2025" },
+  { title: "Hostel Code of Conduct", size: "1.1 MB PDF", date: "Mandatory" },
+  { title: "Gymkhana Constitution", size: "3.5 MB PDF", date: "v2.4" },
+  { title: "MCM Scholarship Form", size: "0.8 MB DOCX", date: "Fillable" }
 ];
 
 const externalLinks = [
-  { title: "Academic Portal (MIS)", desc: "Check grades, register for courses, and pay tuition fees." },
-  { title: "Webmail", desc: "Official IIT Patna student email portal." },
-  { title: "Central Library", desc: "Access e-journals, research papers, and book reservations." }
+  { title: "Academic Portal (MIS)", desc: "Check grades, register for courses, and manage fee structures." },
+  { title: "IITP Webmail", desc: "Access your official @iitp.ac.in institutional email." },
+  { title: "Central Library", desc: "Remote access to IEEE Xplore, ScienceDirect, and e-resources." }
 ];
 
 export default function ResourcesPage() {

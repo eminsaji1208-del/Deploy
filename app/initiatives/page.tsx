@@ -7,11 +7,10 @@ import AnimatedCard from "@/components/AnimatedCard";
 import AnimeOrganicShape from "@/components/AnimeOrganicShape";
 
 const labs = [
-  { title: "IoT & Robotics MakerSpace", desc: "Equipped with 3D printers, CNC machines, and ESP32 nodes. Open 24/7 for sanctioned student projects.", icon: Cpu },
-  { title: "AI & Data Sandbox", desc: "Access to high-performance computing clusters and cloud credits for machine learning models.", icon: Code },
-  { title: "Automotive Incubation", desc: "Dedicated garage and funding for the Formula SAE and Solar Car racing teams.", icon: Rocket }
+  { title: "IoT & Robotics MakerSpace", desc: "Equipped with 3D printers, CNC machines, and embedded systems. Open 24/7 for sanctioned Gymkhana projects.", icon: Cpu },
+  { title: "Hackathon Collectives", desc: "Dedicated funding and mentoring for competitive coding teams, including groups like the Anantavyomah collective.", icon: Code },
+  { title: "AI & Data Sandbox", desc: "Exclusive access to high-performance computing clusters tailored for complex machine learning models.", icon: Rocket }
 ];
-
 export default function InitiativesPage() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
