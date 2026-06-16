@@ -11,7 +11,6 @@ export default function MagneticElement({ children, className = "" }: { children
     const { height, width, left, top } = ref.current!.getBoundingClientRect();
     const middleX = clientX - (left + width / 2);
     const middleY = clientY - (top + height / 2);
-    
     setPosition({ x: middleX * 0.2, y: middleY * 0.2 });
   };
 
