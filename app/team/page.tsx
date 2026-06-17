@@ -1,135 +1,89 @@
-"use client";
-import { useEffect, useRef } from "react";
-import { siteConfig } from "@/data/site-config";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Mail, Phone, MapPin, Briefcase, GraduationCap, ArrowRight } from "lucide-react";
-import FadeIn from "@/components/FadeIn";
+import { Client } from "pg";
+import { Mail, Shield, User, Globe } from "lucide-react";
 import AnimatedCard from "@/components/AnimatedCard";
 import AnimeOrganicShape from "@/components/AnimeOrganicShape";
 
-const adminTeam = [
-  { name: "Dr. A. K. Rajput", role: "Dean of Student Affairs (DoSA)", email: "dosa@iitp.ac.in", phone: "+91-612-255-2001", initials: "AR" },
-  { name: "Dr. Smita Sharma", role: "Associate Dean (Welfare)", email: "adosa_w@iitp.ac.in", phone: "+91-612-255-2002", initials: "SS" },
-  { name: "Dr. R. K. Verma", role: "Associate Dean (Hostels)", email: "adosa_h@iitp.ac.in", phone: "+91-612-255-2003", initials: "RV" },
-];
+export const dynamic = "force-dynamic";
 
-const studentReps = [
-  { name: "Rahul Deshmukh", role: "Vice President, Student Gymkhana", email: "vp_gymkhana@iitp.ac.in", initials: "RD" },
-  { name: "Ananya Singh", role: "General Secretary, Cultural", email: "gensec_cult@iitp.ac.in", initials: "AS" },
-  { name: "Karthik Iyer", role: "General Secretary, Technical", email: "gensec_tech@iitp.ac.in", initials: "KI" },
-  { name: "Priya Malik", role: "General Secretary, Sports", email: "gensec_sports@iitp.ac.in", initials: "PM" },
-];
+export default async function TeamPage() {
+  let team: any[] = [];
+  let vision = "To foster excellence in student affairs and holistic development.";
 
-export default function TeamPage() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
-  const headerY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  try {
+    const client = new Client({ connectionString: process.env.POSTGRES_URL });
+    await client.connect();
 
-  useEffect(() => {
-    import("animejs").then((animeModule: any) => {
-      const anime = animeModule.default || animeModule;
+    // Fetch the team and the vision from Prisma
+    const teamRes = await client.query(`SELECT * FROM team_members ORDER BY id ASC`);
+    const visionRes = await client.query(`SELECT setting_value FROM site_settings WHERE setting_key = 'vision'`);
 
-      // 1. Cascading Deck Reveal for Profile Cards
-      anime({
-        targets: '.profile-card',
-        translateY: [50, 0],
-        opacity: [0, 1],
-        delay: anime.stagger(150, { start: 300 }),
-        easing: 'easeOutElastic(1, .8)',
-        duration: 800
-      });
+    team = teamRes.rows;
+    if (visionRes.rows.length > 0) {
+      vision = visionRes.rows[0].setting_value;
+    }
 
-      // 2. Avatar Hover Physics
-      const cards = document.querySelectorAll('.profile-card');
-      cards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-          anime({ targets: card.querySelector('.avatar-box'), scale: 1.1, rotate: 5, duration: 400, easing: 'easeOutQuad' });
-        });
-        card.addEventListener('mouseleave', () => {
-          anime({ targets: card.querySelector('.avatar-box'), scale: 1, rotate: 0, duration: 400, easing: 'easeOutQuad' });
-        });
-      });
-    });
-  }, []);
+    await client.end();
+  } catch (error) {
+    console.error("Failed to load team data:", error);
+  }
 
   return (
-    <div className="bg-background min-h-screen overflow-hidden">
-      
-      {/* HERO SECTION */}
-      <section ref={containerRef} className="relative pt-32 pb-20 md:pt-48 md:pb-32 bg-primary overflow-hidden">
-        <AnimeOrganicShape className="w-[800px] h-[800px] top-[-300px] right-[-200px] opacity-10 text-white" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent z-10" />
+    <div className="min-h-screen bg-background relative overflow-hidden pt-32 pb-24 px-6">
+      <AnimeOrganicShape className="w-[800px] h-[800px] top-[-200px] right-[-300px] opacity-10 text-primary pointer-events-none" />
 
-        <motion.div style={{ y: headerY }} className="relative z-20 max-w-6xl mx-auto px-6 text-center">
-          <FadeIn>
-            <h1 className="text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tight mb-6 drop-shadow-lg">
-              OUR <span className="text-highlight">TEAM</span>
-            </h1>
-            <p className="text-base md:text-xl text-white/80 max-w-2xl mx-auto font-light tracking-wide leading-relaxed mb-10">
-              Meet the dedicated administrators and elected student representatives who govern, protect, and elevate the IIT Patna community.
-            </p>
-          </FadeIn>
-        </motion.div>
-      </section>
-
-      <div className="max-w-6xl mx-auto px-6 py-16 md:py-24 relative z-30 space-y-24 md:space-y-32">
+      <div className="max-w-6xl mx-auto relative z-10 space-y-20">
         
-        {/* CORE ADMINISTRATION */}
-        <div>
-          <FadeIn>
-            <div className="mb-10 text-center md:text-left">
-              <h2 className="text-[11px] font-bold text-accent uppercase tracking-widest mb-2 flex items-center justify-center md:justify-start gap-2">
-                <Briefcase size={14} /> Executive Board
-              </h2>
-              <h3 className="text-3xl md:text-5xl font-semibold text-primary tracking-tight">Core Administration</h3>
+        {/* Page Header & Vision Statement */}
+        <div className="text-center max-w-3xl mx-auto">
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center">
+              <Globe size={32} className="text-primary" />
             </div>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {adminTeam.map((member, i) => (
-              <div key={i} className="profile-card opacity-0 p-8 bg-surface border border-border rounded-3xl group cursor-pointer hover:border-accent/40 transition-colors shadow-sm hover:shadow-md">
-                <div className="avatar-box w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-6 text-2xl font-black text-white shadow-lg">
-                  {member.initials}
-                </div>
-                <h4 className="text-xl font-bold text-primary mb-1">{member.name}</h4>
-                <p className="text-xs font-bold text-accent uppercase tracking-widest mb-6">{member.role}</p>
-                
-                <div className="space-y-3 text-sm text-text-muted font-light">
-                  <p className="flex items-center gap-3"><Mail size={14} className="text-primary/50" /> {member.email}</p>
-                  <p className="flex items-center gap-3"><Phone size={14} className="text-primary/50" /> {member.phone}</p>
-                </div>
-              </div>
-            ))}
           </div>
+          <h1 className="text-4xl md:text-5xl font-black text-primary tracking-tight mb-6">
+            Our Vision & Administration
+          </h1>
+          
+          <AnimatedCard className="bg-surface border border-border p-8 rounded-3xl shadow-lg relative">
+            <div className="absolute -top-4 -left-4 text-6xl text-accent opacity-50 font-serif">"</div>
+            <p className="text-xl text-text leading-relaxed font-medium relative z-10">
+              {vision}
+            </p>
+            <div className="absolute -bottom-8 -right-4 text-6xl text-accent opacity-50 font-serif rotate-180">"</div>
+          </AnimatedCard>
         </div>
 
-        {/* STUDENT REPRESENTATIVES */}
-        <div className="relative">
-          <AnimeOrganicShape className="w-[500px] h-[500px] bottom-[-200px] left-[-200px] opacity-10 text-primary" />
-          <FadeIn>
-            <div className="mb-10 text-center md:text-left relative z-10">
-              <h2 className="text-[11px] font-bold text-accent uppercase tracking-widest mb-2 flex items-center justify-center md:justify-start gap-2">
-                <GraduationCap size={14} /> Elected Leaders
-              </h2>
-              <h3 className="text-3xl md:text-5xl font-semibold text-primary tracking-tight">Student Gymkhana</h3>
-            </div>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
-            {studentReps.map((rep, i) => (
-              <div key={i} className="profile-card opacity-0 p-6 bg-surface border border-border rounded-2xl group cursor-pointer hover:bg-primary hover:text-white transition-all duration-300">
-                <div className="avatar-box w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center mb-5 text-lg font-bold text-accent group-hover:bg-white group-hover:text-primary transition-colors">
-                  {rep.initials}
-                </div>
-                <h4 className="text-lg font-bold mb-1">{rep.name}</h4>
-                <p className="text-[10px] font-bold text-text-muted uppercase tracking-widest mb-4 group-hover:text-white/70">{rep.role}</p>
-                <p className="flex items-center gap-2 text-xs font-light group-hover:text-white/90">
-                  <Mail size={12} /> {rep.email}
-                </p>
-              </div>
-            ))}
+        {/* Administration Team Grid */}
+        <section>
+          <div className="flex justify-center items-center gap-3 mb-12">
+            <Shield className="text-highlight" size={28} />
+            <h2 className="text-3xl font-bold text-primary">Student Affairs Team</h2>
           </div>
-        </div>
+
+          {team.length === 0 ? (
+            <div className="text-center text-text-muted p-12 bg-surface rounded-3xl border border-border">
+              Administration team members will be updated soon.
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {team.map((member) => (
+                <div key={member.id} className="bg-surface border border-border rounded-3xl p-8 hover:shadow-xl hover:border-accent/50 transition-all group flex flex-col items-center text-center">
+                  <div className="w-24 h-24 bg-background border-2 border-primary/20 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <User size={40} className="text-primary/40" />
+                  </div>
+                  
+                  <h3 className="text-xl font-bold text-primary mb-1">{member.name}</h3>
+                  <p className="text-accent font-semibold text-sm mb-4">{member.role}</p>
+                  
+                  <div className="mt-auto w-full pt-4 border-t border-border flex items-center justify-center gap-2 text-text-muted hover:text-primary transition-colors cursor-pointer">
+                    <Mail size={16} />
+                    <span className="text-sm font-medium">{member.email}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
 
       </div>
     </div>

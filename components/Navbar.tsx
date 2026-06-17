@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { siteConfig } from "@/data/site-config";
 import { ArrowRight, MapPin } from "lucide-react";
 
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -30,28 +31,27 @@ export default function Navbar() {
   }, [menuOpen]);
 
   // Anime.js hover effect for desktop
-  useEffect(() => {
-    if (window.innerWidth > 768) {
-      import("animejs").then((animeModule: any) => {
-        const anime = animeModule.default || animeModule;
-        const letters = document.querySelectorAll(".nav-letter");
-        const brandContainer = document.getElementById("brand-container");
+ useEffect(() => {
+    // Grab the globally loaded library
+    const anime = (window as any).anime;
+    if (typeof anime !== "function") return;
 
-        const playAnimation = () => {
-          anime({
-            targets: letters,
-            translateY: [-4, 0],
-            scale: [1.1, 1],
-            delay: anime.stagger(25),
-            duration: 600,
-            easing: "easeOutElastic(1, .5)"
-          });
-        };
-
-        brandContainer?.addEventListener("mouseenter", playAnimation);
-        return () => brandContainer?.removeEventListener("mouseenter", playAnimation);
+    const letters = document.querySelectorAll(".nav-letter");
+    
+    const playAnimation = () => {
+      anime({
+        targets: letters,
+        translateY: [-4, 0],
+        scale: [1.1, 1],
+        opacity: [0.5, 1],
+        easing: "easeOutSpring(1, 80, 10, 0)",
+        duration: 800,
+        delay: anime.stagger(50)
       });
-    }
+    };
+
+    // Play on mount
+    playAnimation();
   }, []);
 
   const mapLink = "https://www.google.com/maps/place/Indian+Institute+of+Technology+Patna";

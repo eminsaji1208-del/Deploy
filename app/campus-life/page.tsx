@@ -1,127 +1,113 @@
-"use client";
-import { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { Music, Cpu, Trophy, Mic, Code, Camera, Palette, Globe, ChevronRight } from "lucide-react";
-import FadeIn from "@/components/FadeIn";
+import { Client } from "pg";
+import { Calendar, Tag, Info, Sparkles } from "lucide-react";
 import AnimatedCard from "@/components/AnimatedCard";
 import AnimeOrganicShape from "@/components/AnimeOrganicShape";
 
-const festivals = [
-  { id: "anwesha", title: "Anwesha", subtitle: "Annual Cultural Fest", desc: "IIT Patna's flagship 3-day multi-city cultural festival featuring Pro-Nites and global artist headliners.", icon: Music, color: "bg-rose-500" },
-  { id: "celesta", title: "Celesta", subtitle: "Annual Techno-Management Fest", desc: "The ultimate technical summit featuring national-level hackathons and robotics wars.", icon: Cpu, color: "bg-blue-600" },
-  { id: "infinito", title: "Infinito", subtitle: "Annual Sports Fest", desc: "Bringing together the finest athletes from technical institutes for competitive sports tournaments.", icon: Trophy, color: "bg-emerald-500" }
-];
+// Force Next.js to always fetch the freshest data (No stale caching)
+export const dynamic = "force-dynamic";
 
-const clubs = [
-  { name: "NJACK (Computer Science)", icon: Code }, { name: "Sparkonics (Electronics)", icon: Cpu },
-  { name: "Aria (Music Society)", icon: Mic }, { name: "Yavanika (Dramatics)", icon: Palette },
-  { name: "Pixels (Photography)", icon: Camera }, { name: "House of Words", icon: Globe }
-];
-export default function CampusLifePage() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end start"] });
-  const headerY = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+export default async function CampusLifePublicPage() {
+  let events: any[] = [];
+  let fests: any[] = [];
 
-  useEffect(() => {
-    import("animejs").then((animeModule: any) => {
-      const anime = animeModule.default || animeModule;
+  try {
+    // 1. Connect to your database
+    const client = new Client({ connectionString: process.env.POSTGRES_URL });
+    await client.connect();
 
-      // 1. Continuous Floating Physics for Festival Cards
-      anime({
-        targets: '.fest-card',
-        translateY: [-5, 5],
-        direction: 'alternate',
-        loop: true,
-        easing: 'easeInOutSine',
-        duration: 3000,
-        delay: anime.stagger(500)
-      });
+    // 2. Fetch all public events and fests
+    const eventsRes = await client.query(`SELECT * FROM events ORDER BY event_date DESC`);
+    const festsRes = await client.query(`SELECT * FROM fests ORDER BY created_at ASC`);
 
-      // 2. Staggered Pop-in for Club Pills
-      anime({
-        targets: '.club-pill',
-        scale: [0, 1],
-        opacity: [0, 1],
-        delay: anime.stagger(100, { start: 500 }),
-        easing: 'spring(1, 80, 10, 0)'
-      });
-    });
-  }, []);
+    events = eventsRes.rows;
+    fests = festsRes.rows;
+
+    // 3. Close the connection securely
+    await client.end();
+  } catch (error) {
+    console.error("Failed to load public data:", error);
+  }
 
   return (
-    <div className="bg-background min-h-screen overflow-hidden">
-      
-      {/* HERO SECTION */}
-      <section ref={containerRef} className="relative pt-32 pb-20 md:pt-48 md:pb-32 bg-primary overflow-hidden">
-        <div className="absolute inset-0 bg-primary bg-[url('/iitp-hero.jpg')] bg-cover bg-center opacity-20 mix-blend-screen" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent z-10" />
+    <div className="min-h-screen bg-background relative overflow-hidden pt-32 pb-24 px-6">
+      {/* Background decoration */}
+      <AnimeOrganicShape className="w-[800px] h-[800px] top-[-200px] left-[-300px] opacity-10 text-primary pointer-events-none" />
 
-        <motion.div style={{ y: headerY }} className="relative z-20 max-w-6xl mx-auto px-6 text-center">
-          <FadeIn>
-            <h1 className="text-4xl sm:text-6xl md:text-8xl font-black text-white tracking-tight mb-6 drop-shadow-lg">
-              CAMPUS <span className="text-highlight">LIFE</span>
-            </h1>
-            <p className="text-base md:text-xl text-white/80 max-w-2xl mx-auto font-light tracking-wide leading-relaxed">
-              Vibrant, sleepless, and driven by passion. Explore the massive festivals and hyper-active clubs that define the IIT Patna experience.
-            </p>
-          </FadeIn>
-        </motion.div>
-      </section>
-
-      <div className="max-w-6xl mx-auto px-6 py-16 md:py-24 relative z-30 space-y-24 md:space-y-32">
+      <div className="max-w-6xl mx-auto relative z-10 space-y-20">
         
-        {/* THE BIG THREE FESTIVALS */}
-        <div>
-          <FadeIn>
-            <div className="mb-10 text-center md:text-left">
-              <h2 className="text-[11px] font-bold text-accent uppercase tracking-widest mb-2">The Big Three</h2>
-              <h3 className="text-3xl md:text-5xl font-semibold text-primary tracking-tight">Annual Festivals</h3>
-            </div>
-          </FadeIn>
+        {/* Page Header */}
+        <div className="text-center max-w-2xl mx-auto">
+          <h1 className="text-4xl md:text-5xl font-black text-primary tracking-tight mb-4">
+            Campus Life & Events
+          </h1>
+          <p className="text-text-muted">
+            Discover the vibrant culture, annual festivals, and upcoming announcements happening right now at IIT Patna.
+          </p>
+        </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            {festivals.map((fest, i) => (
-              <FadeIn key={i} delay={0.2 + (i * 0.1)} className="h-full">
-                <AnimatedCard className="fest-card h-full p-8 bg-surface border-border overflow-hidden relative group cursor-pointer">
-                  <div className={`absolute top-0 right-0 w-32 h-32 ${fest.color} rounded-full blur-[80px] opacity-20 group-hover:opacity-40 transition-opacity duration-500`} />
-                  <fest.icon className={`mb-6 ${fest.color.replace('bg-', 'text-')}`} size={36} />
-                  <h4 className="text-3xl font-black text-primary mb-1 tracking-tight">{fest.title}</h4>
-                  <p className="text-[10px] font-bold text-accent uppercase tracking-widest mb-4">{fest.subtitle}</p>
-                  <p className="text-sm text-text-muted font-light leading-relaxed mb-8">
-                    {fest.desc}
-                  </p>
-                  <div className="absolute bottom-8 right-8 w-10 h-10 rounded-full bg-surface border border-border flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-colors duration-300">
-                    <ChevronRight size={18} />
+        {/* SECTION 1: UPCOMING EVENTS & ANNOUNCEMENTS */}
+        <section>
+          <div className="flex items-center gap-3 mb-8">
+            <Sparkles className="text-accent" size={24} />
+            <h2 className="text-2xl font-bold text-primary">Latest Announcements</h2>
+          </div>
+
+          {events.length === 0 ? (
+            <div className="p-8 bg-surface border border-border rounded-3xl text-center">
+              <p className="text-text-muted">No upcoming events right now. Check back soon!</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {events.map((event) => (
+                <AnimatedCard key={event.id} className="bg-surface border border-border rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex justify-between items-start mb-4">
+                    <span className="text-[10px] font-bold px-3 py-1 bg-primary/10 text-primary rounded-full uppercase tracking-wider">
+                      {event.category}
+                    </span>
+                    <div className="flex items-center gap-1 text-text-muted text-xs font-bold">
+                      <Calendar size={14} />
+                      {new Date(event.event_date).toLocaleDateString()}
+                    </div>
                   </div>
+                  <h3 className="text-xl font-bold text-primary mb-3">{event.title}</h3>
+                  <p className="text-sm text-text-muted line-clamp-3">{event.description}</p>
                 </AnimatedCard>
-              </FadeIn>
-            ))}
-          </div>
-        </div>
-
-        {/* STUDENT CLUBS & SOCIETIES */}
-        <div className="relative">
-          <AnimeOrganicShape className="w-[500px] h-[500px] top-[-100px] right-[-100px] opacity-20 text-muted" />
-          
-          <FadeIn>
-            <div className="mb-10 text-center">
-              <h2 className="text-[11px] font-bold text-accent uppercase tracking-widest mb-2">Student Gymkhana</h2>
-              <h3 className="text-3xl md:text-5xl font-semibold text-primary tracking-tight">Active Societies & Clubs</h3>
+              ))}
             </div>
-          </FadeIn>
+          )}
+        </section>
 
-          <div className="flex flex-wrap justify-center gap-4 relative z-10">
-            {clubs.map((club, i) => {
-              const classStr = "club-pill flex items-center gap-3 px-6 py-3 md:px-8 md:py-4 bg-surface border border-border rounded-full hover:border-accent/50 hover:shadow-lg transition-all cursor-pointer group";
-              return (
-                <div key={i} className={classStr}>
-                  <club.icon size={18} className="text-accent group-hover:scale-110 transition-transform" />
-                  <span className="text-sm md:text-base font-semibold text-primary">{club.name}</span>
-                </div>
-              );
-            })}
+        {/* SECTION 2: ANNUAL FESTIVALS */}
+        <section>
+          <div className="flex items-center gap-3 mb-8">
+            <Tag className="text-highlight" size={24} />
+            <h2 className="text-2xl font-bold text-primary">Annual Festivals</h2>
           </div>
-        </div>
+
+          {fests.length === 0 ? (
+            <div className="p-8 bg-surface border border-border rounded-3xl text-center">
+              <p className="text-text-muted">Festivals are currently being planned.</p>
+            </div>
+          ) : (
+            <div className="grid md:grid-cols-2 gap-6">
+              {fests.map((fest) => (
+                <div key={fest.id} className="bg-background border border-border rounded-3xl p-8 flex flex-col md:flex-row gap-6 items-start relative overflow-hidden group">
+                  {/* Decorative accent bar */}
+                  <div className="absolute top-0 left-0 w-2 h-full bg-primary group-hover:bg-accent transition-colors"></div>
+                  
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 text-accent text-sm font-bold mb-2 uppercase tracking-widest">
+                      <Calendar size={16} />
+                      {fest.fest_date}
+                    </div>
+                    <h3 className="text-2xl font-black text-primary mb-3">{fest.name}</h3>
+                    <p className="text-text-muted">{fest.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
 
       </div>
     </div>
