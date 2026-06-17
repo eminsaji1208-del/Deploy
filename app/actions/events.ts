@@ -1,5 +1,5 @@
 "use server";
-import { createClient } from "@vercel/postgres";
+import { Client } from "pg"; // <-- Swapped to standard pg library
 import { revalidatePath } from "next/cache";
 
 export async function createEvent(formData: FormData) {
@@ -10,15 +10,16 @@ export async function createEvent(formData: FormData) {
 
   const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
 
-  // Manually open connection to Prisma DB
-  const client = createClient({ connectionString: process.env.POSTGRES_URL });
+  const client = new Client({ connectionString: process.env.POSTGRES_URL });
   await client.connect();
 
   try {
-    await client.sql`
-      INSERT INTO events (title, slug, event_date, category, description)
-      VALUES (${title}, ${slug}, ${date}, ${category}, ${description})
-    `;
+    // Note: The standard pg library uses $1, $2 for variables (prevents SQL injection)
+    await client.query(
+      `INSERT INTO events (title, slug, event_date, category, description)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [title, slug, date, category, description]
+    );
     
     revalidatePath('/admin');
     
@@ -26,7 +27,6 @@ export async function createEvent(formData: FormData) {
     console.error("Failed to post event:", error);
     throw new Error("Failed to post event");
   } finally {
-    // Always close the connection, even if it fails
     await client.end();
   }
 }

@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@vercel/postgres";
+import { Client } from "pg"; // <-- Swapped to standard pg library
 import { ShieldCheck, LogOut, LayoutDashboard, Send, FileText, AlertTriangle } from "lucide-react";
 import AnimatedCard from "@/components/AnimatedCard";
 import AnimeOrganicShape from "@/components/AnimeOrganicShape";
@@ -18,12 +18,12 @@ export default async function AdminDashboard() {
   let dbError = null;
 
   try {
-    // 1. Connect to Prisma DB
-    const client = createClient({ connectionString: process.env.POSTGRES_URL });
+    // 1. Connect using standard pg library
+    const client = new Client({ connectionString: process.env.POSTGRES_URL });
     await client.connect();
 
-    // 2. SELF-HEALING: Automatically create the table if it doesn't exist yet!
-    await client.sql`
+    // 2. Create the table if it doesn't exist
+    await client.query(`
       CREATE TABLE IF NOT EXISTS events (
         id SERIAL PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
@@ -33,16 +33,15 @@ export default async function AdminDashboard() {
         description TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
-    `;
+    `);
 
     // 3. Fetch the events
-    const { rows } = await client.sql`SELECT * FROM events ORDER BY created_at DESC LIMIT 10`;
+    const { rows } = await client.query(`SELECT * FROM events ORDER BY created_at DESC LIMIT 10`);
     events = rows;
     
     // 4. Close connection
     await client.end();
   } catch (error: any) {
-    // If it crashes, catch the real error and print it so it doesn't show {}
     console.error("--- REAL DATABASE ERROR ---", error);
     dbError = error.message || "Could not connect to the Prisma database.";
   }
