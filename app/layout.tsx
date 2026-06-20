@@ -1,34 +1,38 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { siteConfig } from "@/data/site-config";
+import Script from "next/script";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
 import AnimeRippleGrid from "@/components/AnimeRippleGrid";
-import Script from "next/script"; 
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: siteConfig.metadata.title,
-  description: siteConfig.metadata.description,
+  title: "Student Affairs Web",
+  description: "Official Gymkhana Student Portal",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      {/* ONLY ONE BODY TAG */}
-      <body className="inter_5901b7c6-module__ec5Qua__variable font-sans flex flex-col min-h-screen">
+      <body className={`${inter.variable} font-sans flex flex-col min-h-screen bg-background text-primary`}>
         
-        {/* THE NUCLEAR BYPASS */}
-        <Script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" strategy="beforeInteractive" />
-        
-        <CustomCursor />
+        {/* THE FIX: Safe placement inside the body with afterInteractive */}
+        <Script 
+          src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" 
+          strategy="afterInteractive" 
+        />
+
         <AnimeRippleGrid />
         <Navbar />
         
-        {children}
+        <main className="flex-grow">
+          {children}
+        </main>
         
       </body>
     </html>

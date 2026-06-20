@@ -32,13 +32,16 @@ export default function Navbar() {
 
   // Anime.js hover effect for desktop
  useEffect(() => {
-    // Grab the globally loaded library
-    const anime = (window as any).anime;
-    if (typeof anime !== "function") return;
+    // 1. Wait 100ms for React/Next.js to fully hydrate and initialize
+    const timer = setTimeout(() => {
+      const anime = (window as any).anime;
+      
+      // 2. Safety check: Ensure anime is loaded and we aren't crashing
+      if (typeof anime !== "function") return;
 
-    const letters = document.querySelectorAll(".nav-letter");
-    
-    const playAnimation = () => {
+      // 3. Your Animation Logic
+      // (Keep your existing targets and properties here)
+      const letters = document.querySelectorAll(".nav-letter"); // Example target
       anime({
         targets: letters,
         translateY: [-4, 0],
@@ -48,12 +51,12 @@ export default function Navbar() {
         duration: 800,
         delay: anime.stagger(50)
       });
-    };
+    }, 100);
 
-    // Play on mount
-    playAnimation();
+    // 4. Cleanup to prevent memory leaks
+    return () => clearTimeout(timer);
   }, []);
-
+  
   const mapLink = "https://www.google.com/maps/place/Indian+Institute+of+Technology+Patna";
   const brandName = "Student Affairs Office";
 
