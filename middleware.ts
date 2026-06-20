@@ -1,7 +1,13 @@
-// middleware.ts
-export { default } from "next-auth/middleware";
+import { withAuth } from "next-auth/middleware";
 
+// This explicitly exports the required middleware function
+export default withAuth({
+  callbacks: {
+    authorized: ({ token }) => !!token,
+  },
+});
+
+// This defines which routes are protected
 export const config = {
-  // The Bouncer: Protects /admin and absolutely any sub-page inside it
   matcher: ["/admin/:path*"],
-};
+};g
