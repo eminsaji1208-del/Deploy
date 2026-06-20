@@ -10,4 +10,4 @@ export default withAuth({
 // This defines which routes are protected
 export const config = {
   matcher: ["/admin/:path*"],
-};g
+};
